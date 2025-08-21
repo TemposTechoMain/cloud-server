@@ -229,6 +229,7 @@ wss.on('connection', (ws, req) => {
   client.log('Connection opened');
 
   ws.on('message', (data, isBinary) => {
+    console.log(msg.toString());
     // Ignore data after the socket is closed
     if (ws.readyState !== ws.OPEN) {
       return;
