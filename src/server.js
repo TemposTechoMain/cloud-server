@@ -272,3 +272,24 @@ wss.on('close', () => {
 });
 
 module.exports = wss;
+const http = require('http');
+
+// Create a basic HTTP server
+const server = http.createServer((req, res) => {
+  res.writeHead(200);
+  res.end('CloudLink server is running');
+});
+
+// Attach WebSocket server to the HTTP server
+server.on('upgrade', (req, socket, head) => {
+  wss.handleUpgrade(req, socket, head, (ws) => {
+    wss.emit('connection', ws, req);
+  });
+});
+
+// Bind to the port Render provides
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+  logger.info(`CloudLink server is listening on port ${PORT}`);
+});
+
